@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="Diffie-Hellman:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/Diffie_Hellman_jar</output-path>
+    <root id="archive" name="Diffie-Hellman.jar">
+      <element id="module-output" name="Task 1. Diffie-Hellman" />
+    </root>
+  </artifact>
+</component>
