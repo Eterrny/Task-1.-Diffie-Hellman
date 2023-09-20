@@ -5,13 +5,13 @@ public class Participant {
     private String name;
     private BigInteger n, g, key;
     private BigInteger privateInt; // случайное большое целое число
-    public BigInteger publicInt; // это число пересылается другому пользователю
+    public BigInteger publicInt; // число, пересылаемое другому пользователю
 
     public BigInteger getPrivateInt() {
         return privateInt;
     }
 
-    public BigInteger getKey(){
+    public BigInteger getKey() {
         return key;
     }
 
@@ -19,7 +19,11 @@ public class Participant {
         return name;
     }
 
-    public Participant(String name, BigInteger n, BigInteger g){
+    public BigInteger getPublicInt() {
+        return publicInt;
+    }
+
+    public Participant(String name, BigInteger n, BigInteger g) {
         try {
             this.name = name;
             this.n = n;
@@ -41,7 +45,7 @@ public class Participant {
         this.publicInt = this.g.modPow(this.privateInt, n);
     }
 
-    public void calculateKey (BigInteger otherParticipantNum){
+    public void calculateKey(BigInteger otherParticipantNum) {
         this.key = otherParticipantNum.modPow(this.privateInt, this.n);
     }
 }

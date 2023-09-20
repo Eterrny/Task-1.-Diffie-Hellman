@@ -4,15 +4,18 @@ import java.util.Random;
 
 public class Main {
     public static void main(String[] args) {
+        if (args.length == 0) {
+            System.out.println("Входные параметры отсутсвуют");
+            return;
+        }
         BigInteger n;
         try {
             n = new BigInteger(args[0]);
-        } catch (Exception e){
-            System.out.println("Входные параметры заданы некорректно.");
-            e.printStackTrace();
+        } catch (NumberFormatException e) {
+            System.out.println("Входные параметры заданы некорректно.\n" + e.getMessage());
             return;
         }
-        if (!n.isProbablePrime(100)){
+        if (!n.isProbablePrime(100)) {
             throw new IllegalArgumentException("Введенное число не является простым.");
         }
         BigInteger g = generatePrimitiveRoot(n);
@@ -20,12 +23,12 @@ public class Main {
         Participant alice = new Participant("Алиса", n, g);
         Participant bob = new Participant("Боб", n, g);
         System.out.println("Пользователь \"" + alice.getName() + "\" сгенерировал следующее большое целое число: " + alice.getPrivateInt());
-        System.out.println("Пользователь \"" + alice.getName() + "\" отослал пользователю \"" + bob.getName() + "\" число X = " + alice.publicInt);
-        bob.calculateKey(alice.publicInt);
+        System.out.println("Пользователь \"" + alice.getName() + "\" отослал пользователю \"" + bob.getName() + "\" число X = " + alice.getPublicInt());
+        bob.calculateKey(alice.getPublicInt());
         System.out.println();
         System.out.println("Пользователь \"" + bob.getName() + "\" сгенерировал следующее большое целое число: " + bob.getPrivateInt());
-        System.out.println("Пользователь \"" + bob.getName() + "\" отослал пользователю " + alice.getName() + " число Y = " + bob.publicInt);
-        alice.calculateKey(bob.publicInt);
+        System.out.println("Пользователь \"" + bob.getName() + "\" отослал пользователю " + alice.getName() + " число Y = " + bob.getPublicInt());
+        alice.calculateKey(bob.getPublicInt());
         System.out.println();
         System.out.println("Пользователь \"" + alice.getName() + "\" вычислил ключ " + alice.getKey());
         System.out.println("Пользователь \"" + bob.getName() + "\" вычислил ключ " + bob.getKey());
@@ -36,11 +39,11 @@ public class Main {
         Random rand = new Random();
         BigInteger prime = new BigInteger(n.bitLength(), rand);
         ArrayList<BigInteger> orders = getDivisors(n.subtract(BigInteger.ONE));
-        for(;;){
-            if (prime.compareTo(n) >= 0){
+        for (; ; ) {
+            if (prime.compareTo(n) >= 0) {
                 prime = BigInteger.ONE;
             }
-            if (isPrimitive(prime, n, orders)){
+            if (isPrimitive(prime, n, orders)) {
                 return prime;
             }
             prime = prime.add(BigInteger.ONE);
@@ -65,7 +68,7 @@ public class Main {
     public static ArrayList<BigInteger> getDivisors(BigInteger num) {
         ArrayList<BigInteger> divisors = new ArrayList<>();
         for (BigInteger i = BigInteger.ONE; i.compareTo(num.divide(BigInteger.TWO).add(BigInteger.ONE)) < 0; i = i.add(BigInteger.ONE)) {
-            if (num.mod(i).compareTo(BigInteger.ZERO) == 0){
+            if (num.mod(i).compareTo(BigInteger.ZERO) == 0) {
                 divisors.add(i);
             }
         }
